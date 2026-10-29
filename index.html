@@ -41,6 +41,35 @@ td textarea{resize:none;overflow:hidden;display:block;min-height:30px}
 .foot i{flex:0 0 32%;background:var(--navy);clip-path:polygon(0 0,88% 0,100% 100%,0 100%)}
 .foot u{flex:1;background:var(--orange);margin:0 0 12px -4%;clip-path:polygon(4% 0,100% 0,100% 100%,0 100%)}
 .hint{max-width:794px;margin:0 auto;font-size:12px;color:#555;padding:0 8px}
+@media screen and (max-width:640px){
+ .bar{position:sticky;top:0;z-index:5;margin:0;padding:8px;background:#e9ecef;gap:6px}
+ .bar button{flex:1;padding:10px 6px;font-size:12.5px}
+ .page{padding:16px 14px 0;margin:6px 0 16px;box-shadow:none}
+ .head{flex-direction:column;gap:8px}.head img{height:52px;align-self:flex-start}
+ .contact{text-align:left}
+ h1{font-size:24px;margin:10px 0}
+ .info{grid-template-columns:1fr}.info .full{grid-column:auto}.info .l{border-left:0}
+ .info div{min-height:42px}
+ input,textarea{font-size:16px}
+ table,tbody{display:block;margin-top:12px}
+ thead{display:none}
+ tbody{counter-reset:item}
+ tr{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);margin-bottom:10px;position:relative;counter-increment:item}
+ tr::before{content:"Item " counter(item);grid-column:1/3;order:-2;background:var(--orange);color:#fff;font-weight:bold;font-size:12px;padding:6px 10px}
+ td{display:block;border:0;border-top:1px solid #ccc;height:auto;position:static;width:auto}
+ td::before{content:attr(data-l);display:block;font-size:10.5px;color:#666;padding:6px 8px 0;font-weight:bold;text-transform:uppercase}
+ td:nth-child(2){grid-column:1/3;order:-1}
+ td.a{grid-column:1/3;background:#f6f6f6}
+ td.q,td.p,td.a{width:auto;text-align:left}
+ .q input,.p input{text-align:left}
+ td input,td textarea{padding:4px 8px 8px;height:auto}
+ .amt{text-align:left;font-weight:bold;font-size:15px;padding:4px 8px 8px;min-height:30px}
+ .del{left:auto;right:6px;top:4px;background:#fff;color:#c0392b;width:24px;height:24px;font-size:16px;line-height:22px;font-weight:bold}
+ .tot b{width:55%}.tot span{padding:12px 8px}
+ .sig{margin-top:40px;gap:14px}.sig div{width:46%}
+ .foot{margin:22px -14px 0}
+ .hint{padding:0 14px 20px}
+}
 @media print{
  body{background:#fff}.bar,.hint,.del{display:none!important}
  .page{box-shadow:none;margin:0;width:100%;padding:0 6mm}
@@ -48,6 +77,10 @@ td textarea{resize:none;overflow:hidden;display:block;min-height:30px}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
  @page{size:A4;margin:8mm}
  input::placeholder,textarea::placeholder{color:transparent}
+ .page{padding-top:0}.head img{height:54px}h1{margin:8px 0 10px;font-size:26px}
+ .info div{min-height:24px}table{margin-top:10px}td{height:25px}td textarea{min-height:23px}th{padding:5px}
+ .tot span,.tot b{padding:8px}.words{margin-top:8px}.wl{min-height:30px;padding-top:6px}.sig{margin-top:24px}.foot{margin-top:14px}
+ input[type=date]::-webkit-calendar-picker-indicator{display:none}
 }
 </style></head><body>
 <div class="bar">
@@ -93,9 +126,9 @@ function words(n){n=Math.round(n);if(!n)return'';
  return out.join(' ')+' Uganda Shillings Only'}
 function addRow(q='',d='',p=''){
  const tr=document.createElement('tr');
- tr.innerHTML=`<td class="q"><input inputmode="decimal" value="${q}"></td>
- <td><button class="del" title="Remove row">×</button><textarea rows="1">${d}</textarea></td>
- <td class="p"><input inputmode="decimal" value="${p}"></td><td class="a"><span class="amt"></span></td>`;
+ tr.innerHTML=`<td class="q" data-l="Qty"><input inputmode="decimal" value="${q}"></td>
+ <td data-l="Description"><button class="del" title="Remove row">×</button><textarea rows="1">${d}</textarea></td>
+ <td class="p" data-l="Price (UGX)"><input inputmode="decimal" value="${p}"></td><td class="a" data-l="Amount (UGX)"><span class="amt"></span></td>`;
  const [qi,di,pi]=tr.querySelectorAll('input,textarea');
  [qi,pi,di].forEach(e=>e.addEventListener('input',()=>{if(e===di)grow(di);calc()}));
  pi.addEventListener('blur',()=>{const n=num(pi.value);if(n!==null)pi.value=fmt(n);calc()});
